@@ -6,25 +6,24 @@ import CardFooter from "./components/CardFooter"
 
 export default function Home() {
 
+  const [deckID, setDeckID] = useState<string | null>(null);
   const [dealerCards, setDealerCards] = useState(null);
 
   useEffect(() => {
-    fetch("https://deckofcardsapi.com/api/deck/new/draw/?count=2")
+    fetch("https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=6")
     .then((response) => response.json()
-    .then(data => {setDealerCards(data);
+    .then(data => {setDeckID(data.deck_id);
     console.log(data);
     })); 
-    
     }, []);
 
     
 
   return (
     <div className="tableBG h-screen">
-      <main>
-        
+      <main> 
       </main>
-      <CardFooter></CardFooter>
+      <CardFooter deckID={deckID}></CardFooter>
     </div>
   );
 }
