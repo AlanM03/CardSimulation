@@ -8,7 +8,7 @@ type CardProps = {
 export default function Card({image, index}:CardProps){
     return(
         <div 
-            className="absolute h-40 w-30 bg-blue-700 border-2 border-amber-500 hover:!z-[100] hover:-translate-y-4 hover:scale-110 transition-all duration-200"
+            className="absolute h-40 w-30 border-2 border-black rounded-md hover:!z-[100] hover:-translate-y-4 hover:scale-110 transition-all duration-200"
             style={{ left: `${index * 40}px`, zIndex: index }}
         >
             <Image 

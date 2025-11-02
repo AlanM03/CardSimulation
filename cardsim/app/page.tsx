@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useState, useEffect } from 'react';
 import CardFooter from "./components/CardFooter"
+import DealerView from "./components/DealerView";
 
 export default function Home() {
 
@@ -19,8 +20,7 @@ export default function Home() {
 
   return (
     <div className="tableBG h-screen">
-      <main> 
-      </main>
+      <DealerView deckID={deckID}></DealerView>
       <CardFooter deckID={deckID}></CardFooter>
     </div>
   );
