@@ -6,7 +6,7 @@ type DealerCardProps = {
 
 export default function Card({image}:DealerCardProps){
     return(
-        <div className="absolute h-40 w-30 border-2 border-black rounded-md">
+        <div className="relative h-40 w-30 border-2 border-black rounded-md">
             <Image 
                 src={image} 
                 alt="description"
