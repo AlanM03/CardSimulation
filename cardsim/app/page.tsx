@@ -17,8 +17,6 @@ export default function Home() {
     })); 
     }, []);
 
-    
-
   return (
     <div className="tableBG h-screen">
       <main> 
