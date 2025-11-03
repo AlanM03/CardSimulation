@@ -13,8 +13,10 @@ export default function Card({image, index}:CardProps){
         >
             <Image 
                 src={image} 
-                alt="description"
+                alt="the players cards"
                 fill
+                sizes="120px"
+                loading="eager"
                 className="object-cover"
             />
         </div>

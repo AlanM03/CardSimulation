@@ -8,8 +8,13 @@ import DealerView from "./components/DealerView";
 export default function Home() {
 
   const [deckID, setDeckID] = useState<string | null>(null);
-  const [dealerCards, setDealerCards] = useState(null);
+  const [userCards, setUserCards] = useState<[string, string][]>([]);
+  const [dealerCards, setDealerCards] = useState<[string, string][]>([]);
+  const [userTotalValue, setUserTotalValue] = useState<number>(0);
+  const [dealerTotalValue, setDealerTotalValue] = useState<number>(0);
+  const [isStanding, setIsStanding] = useState<boolean>(false);
 
+  //sets the decks for blackjack
   useEffect(() => {
     fetch("https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=6")
     .then((response) => response.json()
@@ -20,8 +25,8 @@ export default function Home() {
 
   return (
     <div className="tableBG h-screen">
-      <DealerView deckID={deckID}></DealerView>
-      <CardFooter deckID={deckID}></CardFooter>
+      <DealerView isStanding={isStanding} dealerCards={dealerCards} setDealerCards={setDealerCards} deckID={deckID} setDealerValue={setDealerTotalValue}></DealerView>
+      <CardFooter isStanding={isStanding} setIsStanding={setIsStanding} userCards={userCards} setUserCards={setUserCards} deckID={deckID} dealerCards={dealerCards} setDealerCards={setDealerCards}></CardFooter>
     </div>
   );
 }
