@@ -8,7 +8,7 @@ type DealerProps = {
     dealerCards: [string, string][];
     setDealerCards: React.Dispatch<React.SetStateAction<[string, string][]>>;
     isStanding: boolean;
-    setDealerValue: React.Dispatch<React.SetStateAction<number>>
+    setDealerHandValue: React.Dispatch<React.SetStateAction<number>>
 }
 
 type CardData = {
@@ -16,7 +16,7 @@ type CardData = {
     image: string;
 }
 
-export default function DealerView({deckID, dealerCards, setDealerCards, isStanding, setDealerValue}: DealerProps){
+export default function DealerView({deckID, dealerCards, setDealerCards, isStanding, setDealerHandValue}: DealerProps){
 
     const cardValues: { [key: string]: number } = {
         "2": 2,
@@ -43,8 +43,7 @@ export default function DealerView({deckID, dealerCards, setDealerCards, isStand
             const newCards = data.cards.map((card:CardData) => [card.value, card.image]);
             const totalValue = newCards.reduce((sum: number, card: [string, string]) => sum + cardValues[card[0]], 0);
             setDealerCards(prevCards => [...prevCards, ...newCards]);
-            setDealerValue(totalValue);
-            console.log(totalValue);
+            setDealerHandValue(totalValue);
         }); 
     }, [deckID]);
 
@@ -53,16 +52,14 @@ export default function DealerView({deckID, dealerCards, setDealerCards, isStand
     .then((response) => response.json()
     .then(data => {
         setDealerCards([...dealerCards, [data.cards[0].value, data.cards[0].image]])
-        setDealerValue(cardValues[data.cards[0].value]);
-        console.log([data.cards[0].value, data.cards[0].image]);
-        console.log(dealerCards)
+        setDealerHandValue(prevValue => prevValue + cardValues[data.cards[0].value]);
     })); 
     }
 
 
     return (
-    <div className="flex flex-col bg-amber-950 w-[80%] h-[60%] m-auto">
-        <div className="flex justify-center items-center flex-1 w-full bg-amber-400 gap-4">
+    <div className="flex flex-col w-[80%] h-[60%] m-auto">
+        <div className="flex justify-center items-center flex-1 w-full gap-4">
             {dealerCards.map((card, index) => (
                 <DealerCard 
                     image={index === 1 && !isStanding ? 'https://deckofcardsapi.com/static/img/back.png' : card[1]} 
@@ -71,7 +68,6 @@ export default function DealerView({deckID, dealerCards, setDealerCards, isStand
             ))}
         </div>
 
-        <button onClick={hitDealer} className="hover:text-amber-500">Hello</button>
     </div>
 )
 }
