@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useEffect } from "react"
 import DealerCard from "./DealerCard"
 
 type DealerProps = {
@@ -58,16 +58,15 @@ export default function DealerView({deckID, dealerCards, setDealerCards, isStand
 
 
     return (
-    <div className="flex flex-col w-[80%] h-[60%] m-auto">
-        <div className="flex justify-center items-center flex-1 w-full gap-4">
-            {dealerCards.map((card, index) => (
-                <DealerCard 
-                    image={index === 1 && !isStanding ? 'https://deckofcardsapi.com/static/img/back.png' : card[1]} 
-                    key={index}
-                />
-            ))}
+        <div className="flex-1 flex items-center justify-center px-4 sm:px-6 pt-6 sm:pt-8 w-full">
+            <div className="flex flex-wrap justify-center items-center gap-3 sm:gap-4 max-w-5xl">
+                {dealerCards.map((card, index) => (
+                    <DealerCard
+                        image={index === 1 && !isStanding ? 'https://deckofcardsapi.com/static/img/back.png' : card[1]}
+                        key={index}
+                    />
+                ))}
+            </div>
         </div>
-
-    </div>
-)
+    )
 }

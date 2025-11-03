@@ -1,10 +1,9 @@
 "use client"
 
-import Image from "next/image";
 import { useState, useEffect } from 'react';
-import CardFooter from "./components/CardFooter"
-import DealerView from "./components/DealerView";
-import GameOverScreen from "./components/GameOverScreen";
+import CardFooter from "./components/game/CardFooter"
+import DealerView from "./components/game/DealerView";
+import GameOverScreen from "./components/ui/GameOverScreen";
 
 export default function Home() {
 
@@ -20,20 +19,18 @@ export default function Home() {
   const [playerWon, setPlayerWon] = useState<boolean>(false);
   const [tie, setTie] = useState<boolean>(false);
 
-  //sets the decks for blackjack
   useEffect(() => {
     fetch("https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=6")
     .then((response) => response.json()
     .then(data => {setDeckID(data.deck_id);
-    })); 
+    }));
     }, []);
 
   return (
-    <div className="tableBG h-screen">
-      <DealerView isStanding={isStanding} dealerCards={dealerCards} setDealerCards={setDealerCards} deckID={deckID} setDealerHandValue={setDealerTotalValue}></DealerView>
-      <CardFooter isStanding={isStanding} setIsStanding={setIsStanding} userCards={userCards} setUserCards={setUserCards} deckID={deckID} dealerCards={dealerCards} setDealerCards={setDealerCards} userHandValue={userTotalValue} dealerHandValue={dealerTotalValue} setUserHandValue={setUserTotalValue} setDealerHandValue={setDealerTotalValue} userBust={userBust} setUserBust={setUserBust} dealerBust={dealerBust} setDealerBust={setDealerBust} setGameOver={setGameOver}
-  setPlayerWon={setPlayerWon} setTie={setTie} gameOver={gameOver}></CardFooter>
-      {gameOver && ( <GameOverScreen tie={tie} playerWon={playerWon} />)}
+    <div className="tableBG min-h-screen h-screen flex flex-col overflow-hidden">
+      <DealerView isStanding={isStanding} dealerCards={dealerCards} setDealerCards={setDealerCards} deckID={deckID} setDealerHandValue={setDealerTotalValue} />
+      <CardFooter isStanding={isStanding} setIsStanding={setIsStanding} userCards={userCards} setUserCards={setUserCards} deckID={deckID} dealerCards={dealerCards} setDealerCards={setDealerCards} userHandValue={userTotalValue} dealerHandValue={dealerTotalValue} setUserHandValue={setUserTotalValue} setDealerHandValue={setDealerTotalValue} userBust={userBust} setUserBust={setUserBust} dealerBust={dealerBust} setDealerBust={setDealerBust} setGameOver={setGameOver} setPlayerWon={setPlayerWon} setTie={setTie} gameOver={gameOver} />
+      {gameOver && <GameOverScreen tie={tie} playerWon={playerWon} />}
     </div>
   );
 }

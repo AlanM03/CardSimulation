@@ -1,6 +1,6 @@
-import CardButtons from "./CardButtons";
+import CardButtons from "../ui/CardButtons";
 import Card from "./Card"
-import { useState, useEffect } from "react" 
+import { useEffect } from "react" 
 
 type FooterProps = {
     deckID: string | null
@@ -56,20 +56,16 @@ export default function CardFooter({deckID, userCards, setUserCards, isStanding,
         }
     }, [userHandValue, gameOver]);
 
-    //after user stands the dealer plays
     useEffect(() => {
-        // Don't process if game is already over
         if (gameOver) return;
-        
-        // Dealer keeps hitting until 17 or busts
+
         if (isStanding && dealerHandValue < 17 && !dealerBust && !userBust) {
             setTimeout(() => {
                 hitDealer();
             }, 1000);
-            return; 
+            return;
         }
-        
-        // Check if dealer busts
+
         if (dealerHandValue > 21 && isStanding) {
             setDealerBust(true);
             setGameOver(true);
@@ -77,11 +73,9 @@ export default function CardFooter({deckID, userCards, setUserCards, isStanding,
             setTie(false);
             return;
         }
-        
-        // Dealer has 17+ and hasn't busted
+
         if (isStanding && dealerHandValue >= 17 && dealerHandValue <= 21 && !userBust) {
             setGameOver(true);
-            console.log("Final comparison - User:", userHandValue, "Dealer:", dealerHandValue);
             if (userHandValue > dealerHandValue) {
                 setPlayerWon(true);
                 setTie(false);
@@ -93,10 +87,8 @@ export default function CardFooter({deckID, userCards, setUserCards, isStanding,
                 setTie(false);
             }
         }
-
     }, [dealerHandValue, isStanding, dealerBust, userBust, gameOver, userHandValue]);
 
-    //to load users first two cards
     useEffect(() => {
         if (!deckID) return;
         
@@ -132,22 +124,20 @@ export default function CardFooter({deckID, userCards, setUserCards, isStanding,
         setIsStanding(!isStanding);
     }
 
+    const cardContainerWidth = userCards.length > 0 ? (userCards.length - 1) * 35 + 98 : 98;
+
     return (
-        <div className="w-full h-[40%]">
-            <div className="grid grid-cols-[25%_50%_25%] gap-2 justify-items-center h-full">
-                <div className="flex flex-col justify-center">
-                    <CardButtons text={"Hit"} isDisabled={isStanding} buttonFunction={hitDeck} className="w-20 text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"></CardButtons>
-                </div>
-                <div className="flex justify-center items-center flex-1 w-full">
-                    <div className="relative" style={{ width: `${userCards.length * 40 + 80}px`, height: '160px' }}>
+        <div className="w-full flex-1 flex items-center justify-center px-4 sm:px-6 pb-6 sm:pb-8">
+            <div className="w-full max-w-5xl flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6">
+                <CardButtons text="Hit" isDisabled={isStanding || userBust} buttonFunction={hitDeck} />
+                <div className="flex justify-center items-center overflow-x-auto w-full sm:w-auto">
+                    <div className="relative" style={{ width: `${cardContainerWidth}px`, height: '140px' }}>
                         {userCards.map((card, index) => (
-                            <Card image={card[1]} index={index} key={index}></Card>
+                            <Card image={card[1]} index={index} key={index} />
                         ))}
                     </div>
                 </div>
-                <div className="flex flex-col justify-center">
-                    <CardButtons text={"Stay"} isDisabled={isStanding} buttonFunction={setStanding} className="w-20 text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"></CardButtons>
-                </div>
+                <CardButtons text="Stay" isDisabled={isStanding || userBust} buttonFunction={setStanding} />
             </div>
         </div>
     );
